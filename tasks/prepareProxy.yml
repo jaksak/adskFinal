@@ -1,0 +1,26 @@
+  - name: "install epel repo"
+    yum:
+      name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+      state: present
+  - name: "install nginx"
+    yum:
+      name: nginx
+      state: present
+  - name: "remove old cfg file"
+    file:
+      state: absent
+      path: /etc/nginx/nginx.conf
+  - name: "copy cfg into dest"
+    template:
+      src: template/proxy.conf
+      dest: /etc/nginx/nginx.conf
+  - name: "restart nginx"
+    service:
+      name: nginx
+      state: restarted
+  - name: "install certbot"
+    yum:
+      name: python2-certbot-nginx
+      state: present
+  - name: install ssh
+    shell: certbot -i nginx -n -d "{{domain}}" --nginx -m "jkrzemien28@gmail.com" --agree-tos --redirect

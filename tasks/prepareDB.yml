@@ -1,0 +1,26 @@
+---
+    - name: "install mysql"
+      yum:
+        name: "{{packages}}"
+        state: present
+      vars:
+        packages:
+            - mariadb
+            - mariadb-server
+            - MySQL-python
+    - name: "Start service mariadb, if not started"
+      service:
+        name: mariadb
+        state: started
+    - name: "Create a new database with name hello_db"
+      mysql_db:
+            name: hello_db
+            state: present
+    - name: "Create a new database"
+      mysql_db:
+        name: hello_db
+        state: present
+    - name: "Create a new database with name my_database_db"
+      mysql_db:
+        name: my_database_db
+        state: present
